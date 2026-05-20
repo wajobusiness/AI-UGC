@@ -30,14 +30,35 @@ export async function POST(req) {
       return new NextResponse("Invalid model selected", { status: 400 });
     }
 
+    // Calculate required credits
+    let requiredCredits = 10;
+    const duration = typeof settings.duration === "number" ? settings.duration : 5;
+    const resolution = settings.resolution || "";
+
+    if (modelId === "grok-video") {
+      const grokDuration = typeof settings.duration === "number" ? settings.duration : 6;
+      const rate = resolution === "720p" ? 10 : 5;
+      requiredCredits = grokDuration * rate;
+    } else if (modelId === "veo-3-1") {
+      const veoDuration = typeof settings.duration === "number" ? settings.duration : 8;
+      let rate = 500;
+      if (resolution === "1080p") rate = 650;
+      else if (resolution === "4k") rate = 740;
+      requiredCredits = veoDuration * rate;
+    } else if (modelId === "happy-horse") {
+      requiredCredits = duration * 36;
+    } else if (modelId === "seedance-2") {
+      requiredCredits = duration * 50;
+    }
+
     // Check credits
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
       select: { credits: true }
     });
 
-    if (!user || user.credits <= 0) {
-      return NextResponse.json({ error: "Insufficient credits" }, { status: 403 });
+    if (!user || user.credits < requiredCredits) {
+      return NextResponse.json({ error: `Insufficient credits. This requires ${requiredCredits} credits but you only have ${user?.credits || 0}.` }, { status: 403 });
     }
 
     // Prepare payload based on MUAPI specs
@@ -84,10 +105,10 @@ export async function POST(req) {
       }
     });
 
-    // Deduct 1 credit
+    // Deduct required credits
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { credits: { decrement: 1 } }
+      data: { credits: { decrement: requiredCredits } }
     });
 
     return NextResponse.json({ 

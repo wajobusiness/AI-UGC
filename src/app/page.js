@@ -207,15 +207,18 @@ export default function Home() {
   // Polling for last generation status
   useEffect(() => {
     let interval;
-    if (lastGeneration && lastGeneration.status === 'processing') {
+    const activeStatuses = ['processing', 'pending', 'starting', 'queued'];
+    if (lastGeneration && activeStatuses.includes(lastGeneration.status)) {
       interval = setInterval(async () => {
         try {
           const res = await fetch(`/api/creations/${lastGeneration.id}`);
           if (res.ok) {
             const data = await res.json();
-            if (data.status !== 'processing') {
+            if (!activeStatuses.includes(data.status)) {
               setLastGeneration(data);
               clearInterval(interval);
+            } else if (data.status !== lastGeneration.status) {
+              setLastGeneration(data);
             }
           }
         } catch (error) {
@@ -235,6 +238,35 @@ export default function Home() {
       setModelSettings(defaults);
     }
   }, [selectedModel]);
+
+  const getRequiredCredits = () => {
+    const duration = typeof modelSettings.duration === "number" ? modelSettings.duration : 5;
+    const resolution = modelSettings.resolution || "";
+
+    if (selectedModel.id === "grok-video") {
+      const grokDuration = typeof modelSettings.duration === "number" ? modelSettings.duration : 6;
+      const rate = resolution === "720p" ? 10 : 5;
+      return grokDuration * rate;
+    }
+
+    if (selectedModel.id === "veo-3-1") {
+      const veoDuration = typeof modelSettings.duration === "number" ? modelSettings.duration : 8;
+      let rate = 500;
+      if (resolution === "1080p") rate = 650;
+      else if (resolution === "4k") rate = 740;
+      return veoDuration * rate;
+    }
+
+    if (selectedModel.id === "happy-horse") {
+      return duration * 36;
+    }
+
+    if (selectedModel.id === "seedance-2") {
+      return duration * 50;
+    }
+
+    return 10;
+  };
 
 
   const handleImageUpload = async (e) => {
@@ -364,10 +396,12 @@ export default function Home() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 className="relative w-full max-w-lg aspect-[9/16] max-h-[60vh] bg-glass-bg rounded border border-glass-border shadow-2xl overflow-hidden flex flex-col items-center justify-center"
               >
-                {lastGeneration.status === 'processing' ? (
+                {['processing', 'pending', 'starting', 'queued'].includes(lastGeneration.status) ? (
                   <div className="flex flex-col items-center gap-4">
                     <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
-                    <span className="text-[10px] font-black text-muted uppercase tracking-[0.3em] animate-pulse">Manifesting...</span>
+                    <span className="text-[10px] font-black text-muted uppercase tracking-[0.3em] animate-pulse">
+                      Manifesting ({lastGeneration.status})...
+                    </span>
                   </div>
                 ) : lastGeneration.status === 'failed' ? (
                   <div className="flex flex-col items-center gap-4 p-8 text-center">
@@ -550,6 +584,14 @@ export default function Home() {
                       return null;
                     })}
                 </div>
+              </div>
+
+              {/* Show credit cost */}
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#f9f9f9] border border-[#ececec] rounded-full mr-2">
+                <FaCoins className="text-yellow-600 text-xs" />
+                <span className="text-[10px] font-bold text-slate-700">
+                  Cost: {getRequiredCredits()}
+                </span>
               </div>
 
               <button 
