@@ -15,7 +15,7 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: "UGC Studio", href: "/" },
+    { name: "UGC Generator", href: "/" },
     { name: "My Creations", href: "/dashboard" },
     { name: "Pricing", href: "/pricing" },
   ];
@@ -29,7 +29,7 @@ export function Navbar() {
         </div>
         <div className="flex flex-col leading-none">
           <span className="font-black text-xl tracking-tighter uppercase text-foreground">
-            UGC Creator
+            Open AI UGC
           </span>
         </div>
       </Link>
