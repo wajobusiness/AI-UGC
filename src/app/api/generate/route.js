@@ -101,7 +101,7 @@ export async function POST(req) {
         resolution: settings.resolution,
         duration: settings.duration,
         mode: settings.mode,
-        inputImages: images
+        inputImages: images && images.length > 0 ? JSON.stringify(images) : null
       }
     });
 

@@ -16,6 +16,21 @@ export async function GET(req) {
       orderBy: { createdAt: "desc" }
     });
 
+    creations.forEach(c => {
+      if (c.inputImages) {
+        let imagesList = [];
+        try {
+          imagesList = JSON.parse(c.inputImages);
+          if (!Array.isArray(imagesList)) {
+            imagesList = [c.inputImages];
+          }
+        } catch {
+          imagesList = c.inputImages.split(",").map(url => url.trim()).filter(Boolean);
+        }
+        c.inputImages = imagesList;
+      }
+    });
+
     return NextResponse.json(creations);
 
   } catch (error) {

@@ -75,6 +75,19 @@ export async function GET(req, { params }) {
       }
     }
 
+    if (creation && creation.inputImages) {
+      let imagesList = [];
+      try {
+        imagesList = JSON.parse(creation.inputImages);
+        if (!Array.isArray(imagesList)) {
+          imagesList = [creation.inputImages];
+        }
+      } catch {
+        imagesList = creation.inputImages.split(",").map(url => url.trim()).filter(Boolean);
+      }
+      creation.inputImages = imagesList;
+    }
+
     return NextResponse.json(creation);
 
   } catch (error) {

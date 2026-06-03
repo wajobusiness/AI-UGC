@@ -64,7 +64,7 @@ model Creation {
   resolution   String?
   duration     Int?
   mode         String?
-  inputImages  String[]
+  inputImages  String?  @db.Text
   
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
