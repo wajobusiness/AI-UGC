@@ -14,6 +14,8 @@
 
 > **Open-source AI Design Agent** -> https://github.com/Anil-matcha/Open-AI-Design-Agent
 
+> **Schedule your UGC content automatically with AI** -> https://github.com/Anil-matcha/Free-AI-Social-Media-Scheduler
+
 ## 🌐 Live Demo & Deploy
 
 **Live Demo:** [open-ai-ugc.vercel.app](https://open-ai-ugc.vercel.app/)
