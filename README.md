@@ -14,11 +14,12 @@
 
 > **Open-source AI Design Agent** -> https://github.com/Anil-matcha/Open-AI-Design-Agent
 
-## 🌐 Try it Online — No Install Required
+## 🌐 Live Demo & Deploy
 
-**Hosted version:** [https://muapi.ai](https://muapi.ai)
+**Live Demo:** [open-ai-ugc.vercel.app](https://open-ai-ugc.vercel.app/)
 
-Generate UGC video ads directly in your browser — no Node.js, no setup, no Stripe keys. Sign up for a free account to start generating with the same models this repo ships with. The hosted version is always up to date with the latest UGC actor models.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Anil-matcha/Open-AI-UGC)
+
 
 **Follow** the [creator](https://x.com/matchaman11) for updates
 
@@ -158,15 +159,22 @@ npm run build
 npm run start
 ```
 
-### Deploy in 5 minutes (Vercel + Neon + Stripe)
+## ⚡ Deployment: Vercel & Production
 
-1. Push the repo to GitHub.
-2. Import into [Vercel](https://vercel.com/new) and paste all env vars from `.env.example`.
-3. Set `WEBHOOK_URL` to your Vercel deployment URL (e.g. `https://your-app.vercel.app`).
-4. In the Stripe dashboard, add a webhook pointing to `https://<your-domain>/api/webhook/stripe` and copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
-5. In MUAPI, set the webhook URL to `https://<your-domain>/api/webhook/muapi` (or rely on `WEBHOOK_URL` env — `/api/generate/route.js` builds the full path automatically).
+This architecture is engineered explicitly for **Vercel** serverless environments.
 
-You now have a hosted, brandable AI UGC SaaS.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Anil-matcha/Open-AI-UGC)
+
+### 🚀 Launching on Vercel: Step-by-Step
+
+1. **Database Provisioning**: Create a new Postgres database (via Supabase or Neon) and retrieve connection URLs.
+2. **Project Creation**: Import your GitHub repository (`https://github.com/Anil-matcha/Open-AI-UGC`) into the Vercel dashboard.
+3. **Configure Environment Variables**: Add all variables from `.env.example` in Vercel. Set `WEBHOOK_URL` to your Vercel deployment URL (e.g. `https://open-ai-ugc.vercel.app`).
+4. **Deploy**: Build with Vercel. Next.js page generation will run Prisma client generation automatically via our script config.
+5. **Database Push**: Run `npx prisma db push` to synchronize database models before launching.
+6. **Webhooks Setup**:
+   - Configure a Stripe Webhook pointing to `https://open-ai-ugc.vercel.app/api/webhook/stripe` selecting `checkout.session.completed`.
+   - Configure the MuAPI Webhook pointing to `https://open-ai-ugc.vercel.app/api/webhook/muapi`.
 
 ## 🏗️ Architecture
 
