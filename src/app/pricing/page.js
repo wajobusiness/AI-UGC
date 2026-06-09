@@ -1,209 +1,121 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { FiCheck, FiZap, FiStar, FiShield, FiArrowRight } from "react-icons/fi";
-import { Button } from "@/components/ui/Button";
+import { useSession } from "next-auth/react";
+import { useState } from "react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import { FaCheck, FaInfoCircle } from "react-icons/fa";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 const PLANS = [
-  {
-    name: "Starter",
-    price: "Free",
-    description: "Begin your manifestation journey",
-    features: [
-      "10 Credits included",
-      "Standard Rendering speed",
-      "Basic Video Models",
-      "Standard Resolution",
-      "Public Gallery Storage"
-    ],
-    cta: "Start Free",
-    popular: false,
-    color: "slate",
-    credits: 10
-  },
-  {
-    name: "Pro Studio",
-    price: "$19.99",
-    period: "/mo",
-    description: "For active professional creators",
-    features: [
-      "500 Credits monthly",
-      "Seedance 2.0 Priority Access",
-      "HD Rendering (1080p)",
-      "Priority Manifestation Queue",
-      "Private Studio Workspace",
-      "Commercial Usage License"
-    ],
-    cta: "Go Pro",
-    popular: true,
-    color: "primary",
-    credits: 500
-  },
-  {
-    name: "Elite Creator",
-    price: "$49.99",
-    period: "/mo",
-    description: "Scale your creative operations",
-    features: [
-      "1500 Credits monthly",
-      "Native Synchronized Audio",
-      "4K Ultra-HD Output",
-      "Multi-shot Generation",
-      "API Access for Workflows",
-      "24/7 Priority Support"
-    ],
-    cta: "Go Elite",
-    popular: false,
-    color: "slate",
-    credits: 1500
-  }
+  { id: "basic", name: "Basic Pack", price: "$5", credits: 100, description: "Perfect for testing custom prompts and exploring styles." },
+  { id: "standard", name: "Standard Pack", price: "$10", credits: 250, description: "Ideal for regular creators wanting high resolution outputs." },
+  { id: "pro", name: "Professional Pack", price: "$20", credits: 600, description: "Designed for power users demanding batch exports and high speed.", popular: true },
+  { id: "business", name: "Business Pack", price: "$50", credits: 2000, description: "Maximum value pack for agency workflows and large volume generations." }
 ];
 
-export default function PricingPage() {
-  const handlePurchase = async (plan) => {
-    if (plan.price === "Free") {
-      alert("You already have access to the Starter plan!");
+export default function Pricing() {
+  const { data: session, status } = useSession();
+  const [loadingPlan, setLoadingPlan] = useState(null);
+
+  const handleCheckout = async (planId) => {
+    if (status !== "authenticated") {
+      toast.error("You must sign in with Google to purchase credit packages.");
       return;
     }
 
+    setLoadingPlan(planId);
     try {
-      const response = await fetch("/api/checkout/stripe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ plan }),
-      });
-
-      const data = await response.json();
-      
+      const { data } = await axios.post("/api/checkout", { planId });
       if (data.url) {
         window.location.href = data.url;
       } else {
-        throw new Error("No checkout URL received");
+        throw new Error("No redirection URL returned");
       }
-    } catch (error) {
-      console.error("[PURCHASE_ERROR]", error);
-      alert("Something went wrong with the checkout process. Please try again.");
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.error || "Failed to trigger Stripe checkout session.");
+    } finally {
+      setLoadingPlan(null);
     }
   };
+
   return (
-    <div className="flex-1 overflow-y-auto no-scrollbar">
-      <div className="max-w-7xl mx-auto space-y-20">
-        {/* Header */}
-        <div className="text-center space-y-6 max-w-3xl mx-auto pt-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-50 text-primary-600 text-sm font-medium"
-          >
-            <FiZap className="text-xs" />
-            Pricing Plans
-          </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl font-black tracking-tighter text-foreground uppercase"
-          >
-            Fuel your <span className="text-primary-500">Creativity</span>
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-muted font-medium text-sm md:text-base leading-relaxed"
-          >
-            Choose the manifestation plan that fits your studio workflow. 
-            From solo creators to global creative teams.
-          </motion.p>
+    <div className="flex min-h-dvh flex-col bg-bg-page select-none text-primary-text overflow-hidden">
+      <Toaster position="top-right" />
+      <Navbar />
+
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-12 sm:px-6 lg:px-8 flex flex-col gap-10 overflow-y-auto scrollbar-subtle items-center">
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full mb-1">
+            <FaInfoCircle className="text-primary text-xs" />
+            <span className="text-[10px] font-black text-primary uppercase tracking-widest">Pricing Plans</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-black tracking-tight uppercase">Buy Credits Packs</h1>
+          <p className="text-xs sm:text-sm text-secondary-text max-w-lg leading-relaxed">
+            Purchase flexible credit packages to perform high-resolution predictions. Keep all profits — we handle AI infrastructure.
+          </p>
         </div>
 
-        {/* Plans Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {PLANS.map((plan, i) => (
-            <motion.div
-              key={plan.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 + 0.3 }}
-              className={`relative flex flex-col p-8 rounded bg-glass-bg backdrop-blur-3xl border-2 ${
-                plan.popular ? "border-primary-500 shadow-2xl shadow-primary-500/10" : "border-glass-border"
-              } transition-all hover:scale-[1.02]`}
+        {/* Pricing Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl">
+          {PLANS.map((plan) => (
+            <div
+              key={plan.id}
+              className={`relative bg-bg-card border rounded-lg p-6 flex flex-col justify-between gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${
+                plan.popular ? "border-primary shadow-xl shadow-primary/5 scale-105" : "border-divider/50 shadow-md"
+              }`}
             >
               {plan.popular && (
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1.5 rounded-full bg-primary-500 text-white text-[9px] font-black uppercase tracking-widest shadow-lg">
+                <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-black uppercase px-3 py-1 rounded-full tracking-wider shadow">
                   Most Popular
-                </div>
+                </span>
               )}
 
-              <div className="space-y-6 mb-8">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-black text-foreground uppercase tracking-tight">{plan.name}</h3>
-                  <p className="text-[11px] text-muted font-medium leading-relaxed">{plan.description}</p>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <h3 className="text-sm font-extrabold uppercase tracking-wide text-primary-text">{plan.name}</h3>
+                  <p className="text-2xl font-black tracking-tight text-white">{plan.price}</p>
                 </div>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-5xl font-black tracking-tighter text-foreground">{plan.price}</span>
-                  {plan.period && <span className="text-muted font-bold text-sm">{plan.period}</span>}
+                
+                <div className="text-xs bg-bg-page/50 border border-divider/30 p-3 rounded text-center font-extrabold text-primary">
+                  {plan.credits} Art Credits
                 </div>
+
+                <p className="text-xs text-secondary-text leading-relaxed font-medium min-h-[3rem]">{plan.description}</p>
+                
+                <ul className="space-y-2 border-t border-divider/30 pt-4 text-xs font-semibold text-secondary-text">
+                  <li className="flex items-center gap-2">
+                    <FaCheck className="text-primary text-[10px]" />
+                    <span>Dynamic aspect ratios</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaCheck className="text-primary text-[10px]" />
+                    <span>HD image downloads</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaCheck className="text-primary text-[10px]" />
+                    <span>No subscription required</span>
+                  </li>
+                </ul>
               </div>
 
-              <div className="flex-1 space-y-4 mb-10">
-                {plan.features.map((feature) => (
-                  <div key={feature} className="flex items-start gap-3">
-                    <div className={`mt-0.5 w-4 h-4 rounded-full flex items-center justify-center ${plan.popular ? "bg-primary-100 text-primary-600" : "bg-slate-100 text-slate-400"}`}>
-                      <FiCheck className="text-[10px]" />
-                    </div>
-                    <span className="text-xs font-medium text-foreground/80">{feature}</span>
-                  </div>
-                ))}
-              </div>
-
-              <Button
-                onClick={() => handlePurchase(plan)}
-                size="lg"
-                className={`w-full !rounded font-black text-[10px] tracking-widest uppercase py-6 transition-all ${
-                  plan.popular 
-                    ? "!bg-primary-500 !text-white hover:!bg-primary-600 shadow-xl shadow-primary-500/20" 
-                    : "!bg-slate-100 !text-slate-900 hover:!bg-slate-200"
+              <button
+                onClick={() => handleCheckout(plan.id)}
+                disabled={loadingPlan !== null}
+                className={`w-full py-3 rounded-full text-xs font-bold transition-all shadow-md cursor-pointer select-none active:scale-[0.98] ${
+                  plan.popular ? "bg-primary text-white hover:bg-primary-hover shadow-primary/15" : "bg-bg-page hover:bg-bg-card text-primary-text border border-divider"
                 }`}
               >
-                {plan.cta} <FiArrowRight className="ml-2" />
-              </Button>
-            </motion.div>
+                {loadingPlan === plan.id ? "Loading checkout..." : "Purchase Credits"}
+              </button>
+            </div>
           ))}
         </div>
+      </main>
 
-        {/* Bottom Section */}
-        <div className="bg-glass-bg border border-glass-border rounded p-12 text-center space-y-8 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="relative z-10 max-w-2xl mx-auto space-y-4">
-            <h4 className="text-2xl font-black text-foreground uppercase tracking-tight">Need a custom credit package?</h4>
-            <p className="text-xs text-muted font-medium leading-relaxed">
-              If your creative volume exceeds our pro plans, we offer dynamic bulk credit packages 
-              tailored to your production cycle. Connect with our studio engineers today.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-8 pt-4 text-muted">
-              <div className="flex items-center gap-2">
-                <FiShield className="text-primary-500" />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Secure Payments</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <FiStar className="text-primary-500" />
-                <span className="text-[10px] font-bold uppercase tracking-widest">Cancel Anytime</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <style jsx global>{`
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
+      <Footer />
     </div>
   );
 }

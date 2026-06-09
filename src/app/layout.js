@@ -1,7 +1,8 @@
 import "./globals.css";
-import { Providers } from "@/components/Providers";
-import { NavbarWrapper } from "@/components/NavbarWrapper";
+import { Providers } from "./providers";
+import Navbar from "../components/Navbar";
 import { Inter } from "next/font/google";
+import config from "@/lib/config";
 
 const inter = Inter({ subsets: ["latin"], display: "swap" });
 
@@ -23,14 +24,14 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const theme = 'light';
+  const theme = config?.theme || "slate-indigo";
 
   return (
-    <html lang="en" className="h-dvh w-full transition-colors duration-500" data-theme={theme}>
-      <body className={`${inter.className} h-full w-full flex flex-col antialiased transition-colors duration-500`}>
+    <html lang="en" className="h-full w-full" data-theme={theme}>
+      <body className={`${inter.className} h-full w-full flex flex-col antialiased bg-bg-page text-primary-text overflow-hidden`}>
         <Providers>
-          <NavbarWrapper />
-          <div className="flex-1 flex flex-col overflow-y-auto">
+          <Navbar />
+          <div className="flex-1 flex flex-col overflow-y-auto min-h-0">
             {children}
           </div>
         </Providers>
@@ -38,3 +39,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+

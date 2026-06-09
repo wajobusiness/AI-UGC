@@ -18,7 +18,6 @@ import {
 } from "react-icons/fi";
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LoginButton } from "@/components/saas/AuthButtons";
 import { FaCoins } from "react-icons/fa";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
