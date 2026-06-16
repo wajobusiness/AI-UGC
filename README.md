@@ -35,7 +35,7 @@
 
 ---
 
-Open AI UGC is a free, open-source AI UGC video ad studio that brings the Arcads / MakeUGC workflow to everyone — without the $110–$500+/month per-seat subscription. Paste a script, upload a reference face or product image, pick a model, and ship a scroll-stopping 9:16 vertical ad for TikTok, Reels, or Shorts in under a minute. Powered by [Muapi.ai](https://muapi.ai), it supports image-to-video and text-to-video generation across models like **Veo 3.1**, **Seedance 2**, **Grok Video**, and **Happy Horse 1** — all from a sleek, modern interface you can self-host, rebrand, and customize end to end.
+Open AI UGC is a free, open-source AI UGC video ad studio that brings the Arcads / MakeUGC workflow to everyone — without the $110–$500+/month per-seat subscription. Paste a script, upload a reference face or product image, pick a model, and ship a scroll-stopping 9:16 vertical ad for TikTok, Reels, or Shorts in under a minute. Powered by [Muapi.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=open-ai-ugc), it supports image-to-video and text-to-video generation across models like **Veo 3.1**, **Seedance 2**, **Grok Video**, and **Happy Horse 1** — all from a sleek, modern interface you can self-host, rebrand, and customize end to end.
 
 **Why Open AI UGC instead of Arcads or MakeUGC?**
 - **Free & open-source** — no $110–$500/mo subscription, no vendor lock-in
@@ -108,7 +108,7 @@ Plans, prices, and features are defined in one file (`src/app/pricing/page.js`) 
 
 - [Node.js](https://nodejs.org/) (v18+)
 - A PostgreSQL database (free tiers on [Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app))
-- A [Muapi.ai access key](https://muapi.ai/access-keys) — copy the generated key value, not the label
+- A [Muapi.ai access key](https://muapi.ai/access-keys?utm_source=github&utm_medium=readme&utm_campaign=open-ai-ugc) — copy the generated key value, not the label
 - A [Google OAuth client](https://console.cloud.google.com/apis/credentials) (Client ID + Secret)
 - A [Stripe account](https://stripe.com) (test mode is fine to start)
 
@@ -149,7 +149,7 @@ NEXTAUTH_SECRET="..."
 GOOGLE_CLIENT_ID="..."
 GOOGLE_CLIENT_SECRET="..."
 
-# MUAPI — https://muapi.ai/access-keys
+# MUAPI — https://muapi.ai/access-keys?utm_source=github&utm_medium=readme&utm_campaign=open-ai-ugc
 UGC_API_KEY="..."
 WEBHOOK_URL="https://your-deployment-url.com"  # MUAPI calls this when a render finishes
 
@@ -219,7 +219,7 @@ Open-AI-UGC/
 
 ## 🔌 API Integration
 
-Open AI UGC communicates with [Muapi.ai](https://muapi.ai) using a webhook pattern:
+Open AI UGC communicates with [Muapi.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=open-ai-ugc) using a webhook pattern:
 
 1. **Submit** — `POST /api/v1/{model-endpoint}` with `prompt`, `images_list`, model parameters, and `webhook_url`
 2. **Wait** — MUAPI runs the render asynchronously (8s–2min depending on model and duration)
@@ -262,7 +262,7 @@ MIT — fork it, rebrand it, ship it.
 
 ## 🙏 Credits
 
-Built with [Muapi.ai](https://muapi.ai) — the unified API for AI image and video generation models.
+Built with [Muapi.ai](https://muapi.ai?utm_source=github&utm_medium=readme&utm_campaign=open-ai-ugc) — the unified API for AI image and video generation models.
 
 ---
 
