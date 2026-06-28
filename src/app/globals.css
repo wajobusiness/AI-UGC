@@ -16,6 +16,19 @@
   --color-primary-btn-text: var(--primary-btn-text, #ffffff);
 }
 
+:root {
+  --bg-page: #f9fafb;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f3f4f6;
+  --bg-elevated: #ffffff;
+  --divider: #e5e7eb;
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --primary-text: #111827;
+  --secondary-text: #4b5563;
+  --primary-btn-text: #ffffff;
+}
+
 /* Premium Visual Themes Override Definitions */
 [data-theme="cyberpunk"] {
   --bg-page: #05010a;

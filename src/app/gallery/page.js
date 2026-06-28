@@ -66,7 +66,7 @@ export default function Dashboard() {
           <Button 
             onClick={() => router.push("/")} 
             size="lg" 
-            className="!rounded-full !bg-primary-500 !text-white hover:!bg-primary-600 px-6 py-4 font-bold text-sm shadow-xl shadow-primary-500/20"
+            className="!rounded-full !bg-primary !text-white hover:!bg-primary-hover px-6 py-4 font-bold text-sm shadow-xl shadow-primary/20"
           >
             <FiPlus className="mr-2" /> New Creation
           </Button>
@@ -76,7 +76,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto">
         {isLoading ? (
           <div className="py-32 flex flex-col items-center justify-center gap-4">
-            <FiClock className="text-4xl text-primary-200 animate-spin" />
+            <FiClock className="text-4xl text-primary animate-spin" />
             <span className="text-xs font-medium text-muted animate-pulse">Syncing Archive...</span>
           </div>
         ) : creations.length === 0 ? (
@@ -119,7 +119,7 @@ export default function Dashboard() {
                     </div>
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center bg-glass-hover gap-4">
-                      <FiClock className="text-2xl text-primary-300 animate-spin" />
+                      <FiClock className="text-2xl text-primary animate-spin" />
                       <span className="text-xs font-medium text-muted animate-pulse">Processing...</span>
                     </div>
                   )}
@@ -183,7 +183,7 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center gap-6">
-                    <FiClock className="text-6xl text-primary-200 animate-spin" />
+                    <FiClock className="text-6xl text-primary animate-spin" />
                     <span className="text-xs font-medium text-muted animate-pulse">Syncing manifesting...</span>
                   </div>
                 )}
@@ -242,7 +242,7 @@ export default function Dashboard() {
                       download
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-4 bg-primary-500 text-white rounded-full font-bold text-xs flex items-center justify-center gap-3 transition-all hover:bg-primary-600 active:scale-[0.98] shadow-xl shadow-primary-500/20"
+                      className="w-full py-4 bg-primary text-white rounded-full font-bold text-xs flex items-center justify-center gap-3 transition-all hover:bg-primary-hover active:scale-[0.98] shadow-xl shadow-primary/20"
                     >
                       <FiDownload size={14} /> Download Asset
                     </a>

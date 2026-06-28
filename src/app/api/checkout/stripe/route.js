@@ -36,7 +36,7 @@ export async function POST(req) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXTAUTH_URL}/dashboard?status=success`,
+      success_url: `${process.env.NEXTAUTH_URL}/gallery?status=success`,
       cancel_url: `${process.env.NEXTAUTH_URL}/pricing?status=cancelled`,
       metadata: {
         userId: session.user.id,

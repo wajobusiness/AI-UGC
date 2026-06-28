@@ -18,7 +18,7 @@ export function Card({ children, className, hover = true, ...props }) {
       {...props}
     >
       {/* Subtle background glow */}
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
       <div className="relative z-10">
         {children}
       </div>

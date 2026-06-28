@@ -397,7 +397,7 @@ export default function Home() {
               >
                 {['processing', 'pending', 'starting', 'queued'].includes(lastGeneration.status) ? (
                   <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-primary border-t-primary rounded-full animate-spin" />
                     <span className="text-[10px] font-black text-muted uppercase tracking-[0.3em] animate-pulse">
                       Manifesting ({lastGeneration.status})...
                     </span>
@@ -467,7 +467,7 @@ export default function Home() {
                       />
                       {img.status === 'uploading' && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <FiLoader className="text-primary-500 animate-spin text-sm" />
+                          <FiLoader className="text-primary animate-spin text-sm" />
                         </div>
                       )}
                       <button 
@@ -482,7 +482,7 @@ export default function Home() {
                   {uploadedImages.length < 7 && (
                     <button 
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-8 h-8 rounded border-2 border-dashed border-glass-border flex flex-col items-center justify-center text-muted hover:text-foreground hover:border-primary-500/50 transition-all group"
+                      className="w-8 h-8 rounded border-2 border-dashed border-glass-border flex flex-col items-center justify-center text-muted hover:text-foreground hover:border-primary/50 transition-all group"
                     >
                       <FiPlus className="text-lg group-hover:scale-110 transition-transform" />
                     </button>
@@ -596,7 +596,7 @@ export default function Home() {
               <button 
                 onClick={handleGenerate}
                 disabled={isGenerating || !prompt.trim()}
-                className="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+                className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
               >
                 {isGenerating ? (
                   <FiLoader className="text-lg animate-spin" />
