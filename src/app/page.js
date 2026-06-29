@@ -397,7 +397,7 @@ export default function Home() {
               >
                 {['processing', 'pending', 'starting', 'queued'].includes(lastGeneration.status) ? (
                   <div className="flex flex-col items-center gap-4">
-                    <div className="w-12 h-12 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+                    <div className="w-12 h-12 border-4 border-primary border-t-primary rounded-full animate-spin" />
                     <span className="text-[10px] font-black text-muted uppercase tracking-[0.3em] animate-pulse">
                       Manifesting ({lastGeneration.status})...
                     </span>
@@ -467,7 +467,7 @@ export default function Home() {
                       />
                       {img.status === 'uploading' && (
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <FiLoader className="text-primary-500 animate-spin text-sm" />
+                          <FiLoader className="text-primary animate-spin text-sm" />
                         </div>
                       )}
                       <button 
@@ -482,7 +482,7 @@ export default function Home() {
                   {uploadedImages.length < 7 && (
                     <button 
                       onClick={() => fileInputRef.current?.click()}
-                      className="w-8 h-8 rounded border-2 border-dashed border-glass-border flex flex-col items-center justify-center text-muted hover:text-foreground hover:border-primary-500/50 transition-all group"
+                      className="w-8 h-8 rounded border-2 border-dashed border-glass-border flex flex-col items-center justify-center text-muted hover:text-foreground hover:border-primary/50 transition-all group"
                     >
                       <FiPlus className="text-lg group-hover:scale-110 transition-transform" />
                     </button>
@@ -586,9 +586,9 @@ export default function Home() {
               </div>
 
               {/* Show credit cost */}
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#f9f9f9] border border-[#ececec] rounded-full mr-2">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-glass-bg border border-glass-border rounded-full mr-2">
                 <FaCoins className="text-yellow-600 text-xs" />
-                <span className="text-[10px] font-bold text-slate-700">
+                <span className="text-[10px] font-bold text-secondary-text">
                   Cost: {getRequiredCredits()}
                 </span>
               </div>
@@ -596,7 +596,7 @@ export default function Home() {
               <button 
                 onClick={handleGenerate}
                 disabled={isGenerating || !prompt.trim()}
-                className="w-10 h-10 rounded-full bg-primary-500 text-white flex items-center justify-center shadow-lg shadow-primary-500/20 hover:bg-primary-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
+                className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg shadow-primary/20 hover:bg-primary-hover transition-all disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
               >
                 {isGenerating ? (
                   <FiLoader className="text-lg animate-spin" />
@@ -623,22 +623,22 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                className="relative w-full max-w-5xl h-[80vh] bg-white rounded shadow-2xl flex flex-col overflow-y-auto"
+                className="relative w-full max-w-5xl h-[80vh] bg-bg-card rounded shadow-2xl flex flex-col overflow-y-auto"
               >
-                <div className="p-6 border-b border-[#f5f5f5] flex items-center gap-6">
+                <div className="p-6 border-b border-divider/50 flex items-center gap-6">
                   <div className="relative flex-1">
-                    <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+                    <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary-text" />
                     <input
                       type="text"
                       placeholder="Search models..."
-                      className="w-full pl-12 pr-4 py-2 bg-[#f9f9f9] border border-[#ececec] rounded text-xs font-bold outline-none focus:bg-white focus:border-slate-300 transition-all"
+                      className="w-full pl-12 pr-4 py-2 bg-glass-bg border border-glass-border rounded text-xs font-bold outline-none focus:bg-bg-card focus:border-divider transition-all"
                     />
                   </div>
                   <button
                     onClick={() => setIsModelsModalOpen(false)}
-                    className="p-2 hover:bg-slate-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-glass-hover rounded-full transition-colors"
                   >
-                    <FiX className="text-xl text-slate-400" />
+                    <FiX className="text-xl text-secondary-text" />
                   </button>
                 </div>
 
@@ -648,11 +648,11 @@ export default function Home() {
                       <div
                         key={model.id}
                         onClick={() => handleModelSelect(model)}
-                        className={`p-5 rounded border transition-all cursor-pointer space-y-4 group ${selectedModel.id === model.id ? "border-slate-900 ring-1 ring-slate-900 bg-slate-50" : "border-[#ececec] bg-white hover:border-slate-300 hover:shadow-md"}`}
+                        className={`p-5 rounded border transition-all cursor-pointer space-y-4 group ${selectedModel.id === model.id ? "border-primary ring-1 ring-primary bg-bg-card-hover" : "border-divider/50 bg-bg-card hover:border-divider hover:shadow-md"}`}
                       >
                         <div className="flex items-center justify-between">
                           <div
-                            className={`w-10 h-10 rounded flex items-center justify-center border border-[#f0f0f0] transition-all ${selectedModel.id === model.id ? "bg-[#1a1a1a] text-white" : "bg-slate-50 text-slate-600 group-hover:bg-[#1a1a1a] group-hover:text-white"}`}
+                            className={`w-10 h-10 rounded flex items-center justify-center border border-divider/50 transition-all ${selectedModel.id === model.id ? "bg-primary text-white" : "bg-bg-card-hover text-secondary-text group-hover:bg-primary group-hover:text-white"}`}
                           >
                             <model.icon className="text-lg" />
                           </div>
