@@ -27,6 +27,8 @@
 
 > 🎨 **[Explore 50+ more open-source AI apps →](https://github.com/Anil-matcha/awesome-generative-ai-apps)**
 
+https://github.com/user-attachments/assets/eb7d4b61-af97-4a06-9afb-bd56a99de8fb
+
 ## 🌐 Live Demo & Deploy
 
 **Live Demo:** [open-ai-ugc.vercel.app](https://open-ai-ugc.vercel.app/)
